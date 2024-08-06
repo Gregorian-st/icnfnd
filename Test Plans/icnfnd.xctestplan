@@ -1,0 +1,37 @@
+{
+  "configurations" : [
+    {
+      "id" : "16052618-3C2C-4656-94EE-A3A5821E9B36",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:icnfnd.xcodeproj",
+      "identifier" : "F491B5082C5E2C5D008A7DD0",
+      "name" : "icnfnd"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:icnfnd.xcodeproj",
+        "identifier" : "F491B51E2C5E2C5F008A7DD0",
+        "name" : "icnfndTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:icnfnd.xcodeproj",
+        "identifier" : "F491B5282C5E2C5F008A7DD0",
+        "name" : "icnfndUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
