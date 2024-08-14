@@ -9,8 +9,6 @@ import UIKit
 
 final class IconCell: UITableViewCell {
     
-    let tempImage = UIImage(systemName: "photo")?.withTintColor(UIColor.systemGray, renderingMode: .alwaysOriginal)
-    
     weak var imageLoader: ImageLoader?
     
     var icon: Icon? {
@@ -26,18 +24,6 @@ final class IconCell: UITableViewCell {
             if let maxSizeIndex = icon?.maxRasterSizeIndex {
                 let rasterSize = icon?.rasterSizes[maxSizeIndex]
                 sizeLabel.text = "Max Size - Width: \(rasterSize?.sizeWidth ?? 0) Height: \(rasterSize?.sizeHeight ?? 0)"
-                let urlString = icon?.rasterSizes[maxSizeIndex].formats.first?.previewURL ?? ""
-                imageLoader?.fetchImage(urlString: urlString) { [weak self] image in
-                    if let image = image {
-                        DispatchQueue.main.async {
-                            self?.iconImageView.image = image
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            self?.iconImageView.image = self?.tempImage
-                        }
-                    }
-                }
             } else {
                 sizeLabel.text = "Max Size not found"
             }

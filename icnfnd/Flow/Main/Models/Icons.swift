@@ -9,6 +9,10 @@ import Foundation
 
 struct Icons {
     
+    var items: [Icon] = [] {
+        didSet {
+            totalCount = items.count
+        }
+    }
     var totalCount: Int = 0
-    var items: [Icon] = []
 }

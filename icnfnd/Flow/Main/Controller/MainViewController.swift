@@ -65,6 +65,8 @@ final class MainViewController: UIViewController {
             return
         }
         
+        icons.items = []
+        
         networkService.fetchIcons(searchText: trimmedText) { [weak self] result in
             guard let self = self
             else { return }
@@ -133,6 +135,23 @@ extension MainViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIconReuseID, for: indexPath) as! IconCell
         cell.imageLoader = imageLoader
         cell.icon = icons.items[indexPath.row]
+        let tempImage = UIImage(systemName: "photo")?.withTintColor(UIColor.systemGray, renderingMode: .alwaysOriginal)
+        if let maxSizeIndex = cell.icon?.maxRasterSizeIndex {
+            let urlString = cell.icon?.rasterSizes[maxSizeIndex].formats.first?.previewURL ?? ""
+            cell.iconImageView.imageURL = urlString
+            imageLoader.fetchImage(urlString: urlString) { [weak cell] image, iconURL in
+                DispatchQueue.main.async {
+                    guard let cell = cell,
+                          cell.iconImageView.imageURL == iconURL
+                    else { return }
+                    cell.iconImageView.image = image ?? tempImage
+                }
+            }
+        } else {
+            DispatchQueue.main.async {
+                cell.iconImageView.image = tempImage
+            }
+        }
         cell.selectionStyle = .none
         
         return cell
@@ -153,8 +172,9 @@ extension MainViewController: UITableViewDelegate {
         let icon = icons.items[indexPath.row]
         if let maxSizeIndex = icon.maxRasterSizeIndex {
             let urlString = icon.rasterSizes[maxSizeIndex].formats.first?.previewURL ?? ""
-            imageLoader.fetchImage(urlString: urlString) { [weak self] image in
-                if let image = image {
+            imageLoader.fetchImage(urlString: urlString) { [weak self] image, loaderURL in
+                if let image = image,
+                   urlString == loaderURL {
                     DispatchQueue.main.async {
                         UIImageWriteToSavedPhotosAlbum(image,
                                                        self,

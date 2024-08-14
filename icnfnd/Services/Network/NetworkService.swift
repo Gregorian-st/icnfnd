@@ -33,7 +33,10 @@ final class NetworkService {
         ]
         guard let parametersString = parameters.percentEncoded(),
               let url = URL(string: "https://api.iconfinder.com/v4/icons/search?" + parametersString)
-        else { return }
+        else {
+            completion(.failure(IconServerError(code: "Error", message: "Wrong URL")))
+            return
+        }
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"

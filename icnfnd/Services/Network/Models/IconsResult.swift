@@ -83,7 +83,6 @@ struct IconsResult: Decodable {
         }
         
         do {
-            icons.totalCount = try mainContainer.decodeIfPresent(Int.self, forKey: .totalCount) ?? 0
             var iconsArrayContainer = try mainContainer.nestedUnkeyedContainer(forKey: .icons)
             let iconsCount = iconsArrayContainer.count ?? 0
             for index in 0..<iconsCount {
